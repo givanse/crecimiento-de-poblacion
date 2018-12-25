@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+
+const getPopStats = require('../lib/get-pop-stats');
+
+const papa = require('papaparse');
+const fs = require('fs');
+const path = require('path');
+
+const METROPOLITAN_S_A = 'Metropolitan Statistical Area';
+
+function readCSV(filePath) {
+  let csv = fs.readFileSync(filePath, 'utf8'); 
+  csv = csv.replace(/^\uFEFF/, '');
+
+  const result = papa.parse(csv, {
+    header: true,
+  });
+
+  console.error(result.errors);
+
+  return result;
+}
+
+let filePath = path.join(__dirname, '..', 'data', 'zip_to_cbsa.csv');
+const file1 = readCSV(filePath);
+
+filePath = path.join(__dirname, '..', 'data', 'cbsa_to_msa.csv');
+const file2 = readCSV(filePath); 
+
+console.log('total ZIP codes: ', file1.data.length);
+
+function indexByMDIV(data) {
+  const result = {};
+  for (const row of data) {
+    if (row.MDIV) {
+      result[row.MDIV] = row;
+    }
+  }
+  return result;
+}
+const dataIndexedByMDIV = indexByMDIV(file2.data);
+console.log('available MSAs: ', Object.keys(dataIndexedByMDIV).length);
+
+function indexByCBSAAndFilterByLSAD(data) {
+  const result = {};
+  for (const row of data) {
+    if (row.CBSA && row.LSAD === METROPOLITAN_S_A) {
+      result[row.CBSA] = row;
+    }
+  }
+  return result;
+}
+const dataIndexedByCBSA = indexByCBSAAndFilterByLSAD(file2.data);
+console.log('available LSADs: ', Object.keys(dataIndexedByCBSA).length);
+
+const estimatesIndexedByZIP = {};
+for (const row of file1.data) {
+  const result = getPopStats(row.CBSA, dataIndexedByMDIV, dataIndexedByCBSA);
+  result.zip = row.ZIP;
+  estimatesIndexedByZIP[result.zip] = result;
+}
+
+const resultFilePath = path.join(__dirname, '..', '..', 'the-api', 'lib', 'pop-estimates-by-zip.js');
+const text = JSON.stringify(estimatesIndexedByZIP, 2);
+fs.writeFileSync(resultFilePath, `module.exports = ${text};`);
