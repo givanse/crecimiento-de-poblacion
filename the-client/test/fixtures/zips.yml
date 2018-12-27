@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  zip: 11111
+  msaName: MyString1
+  p2014: 1
+  p2015: 1
+
+two:
+  zip: 22222
+  msaName: MyString2
+  p2014: 2
+  p2015: 2

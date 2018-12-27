@@ -60,6 +60,16 @@ for (const row of file1.data) {
   estimatesIndexedByZIP[result.zip] = result;
 }
 
-const resultFilePath = path.join(__dirname, '..', '..', 'the-api', 'lib', 'pop-estimates-by-zip.js');
-const text = JSON.stringify(estimatesIndexedByZIP, 2);
+// for the-api
+let resultFilePath = path.join(__dirname, '..', '..', 'the-api', 'lib', 'pop-estimates-by-zip.js');
+let text = JSON.stringify(estimatesIndexedByZIP);
 fs.writeFileSync(resultFilePath, `module.exports = ${text};`);
+
+// for the rails app
+let resultFilePath2 = path.join(__dirname, '..', '..', 'the-client', 'db', 'pop-estimates-by-zip.json');
+let text2 = JSON.stringify(estimatesIndexedByZIP, null, 2);
+//text2 = text2.replace(/{/g, '\\{');
+//text2 = text2.replace(/}/g, '\\}');
+fs.writeFileSync(resultFilePath2, text2);
+
+

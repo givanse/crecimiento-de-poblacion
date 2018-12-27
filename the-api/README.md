@@ -9,3 +9,9 @@ On Windows, use this command:
 > set DEBUG=myapp:* & npm start
 ```
 
+## API
+
+```
+GET /v1/population/:zip
+```
+
