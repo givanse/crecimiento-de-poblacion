@@ -1,3 +1,22 @@
 // Place all the styles related to the zip controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#input-zip {
+  font-size: 1.8rem;
+  font-family: monospace;
+  border-radius: 4px;
+}
+
+#search-zip {
+  font-size: 1.4rem;
+}
+
+.cbsa-msa {
+  width: 650px;
+  text-align: center;
+}
+
+.population {
+  text-align: left;
+}

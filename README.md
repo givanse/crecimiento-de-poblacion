@@ -13,7 +13,7 @@ Usage example: `./tools/bin/gen-estimates-file`
 
 The output will be located at these two locations:
 
- - the-client/db/pop-estimates-by-zip.json/
+ - the-client/db/pop-estimates-by-zip.json
  - the-api/lib/pop-estimates-by-zip.js
 
 #### the-api

@@ -10,15 +10,36 @@
 </script>
 
 <br>
+<br>
+
 <% unless @zipEstimates.nil? %>
-  <%= puts @zipEstimates %>
-  MSA: <%= @zipEstimates[:data][:attributes][:msaName] %>
-  <br>
-  CBSA: <%= @zipEstimates[:data][:attributes][:cbsa] %>
-  <br>
-  population 2014<%= @zipEstimates[:data][:attributes][:p2014] %>
-  <br>
-  populaiton 2015<%= @zipEstimates[:data][:attributes][:p2015] %>
+  <table class="cbsa-msa">  
+    <thead>
+      <tr>
+        <th>CBSA</th>
+        <th>MSA</th>
+        <th>Population</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <%= @zipEstimates[:data][:attributes][:cbsa] %>
+        </td>
+        <td>
+          <%= @zipEstimates[:data][:attributes][:msaName] %>
+        </td>
+        <td class="population">
+          &nbsp;&nbsp;2014: <%= number_to_human @zipEstimates[:data][:attributes][:p2014], precision: 5 %>
+          <br>
+          &nbsp;&nbsp;2015: <%= number_to_human @zipEstimates[:data][:attributes][:p2015], precision: 5 %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    Annual growth: <%= number_to_human @annualGrowth, precision: 3 %>%
+  </p>
 <% end %>
 
 <% unless @errors.nil? %>
