@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2018_12_27_052904) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "zips", primary_key: "zip", force: :cascade do |t|
     t.string "msaName"
     t.integer "cbsa"
